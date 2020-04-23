@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Account Details{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card col-lg-6 col-md-10" style="align-content: center; margin: 15px auto;">
+            <div class="col-md-10" style="margin: 15px auto">
+                <div class="card-title">
+                    <h4 class="mb-4">Account Details</h4>
+                </div>
+               <div class="card-image">
+                   <img src="{{ account.profile_picture.url }}" width="50%" style="display: block;
+                   margin: 0 auto 15px auto; border: 5px navy solid">
+               </div>
+
+                <table class="table-responsive">
+                    <tbody>
+                        <tr>
+                            <td>Username</td>
+                            <td style="padding-left: 50px">{{ account.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td style="padding-left: 50px">{{ account.email }}</td>
+                        </tr>
+                        <tr>
+                            <td>Last login</td>
+                            <td style="padding-left: 50px">{{ account.last_login }}</td>
+                        </tr>
+                        <tr>
+                            <td>First name</td>
+                            <td style="padding-left: 50px">{{ account.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td style="padding-left: 50px">{{ account.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date of birth</td>
+                            <td style="padding-left: 50px">{{ account.date_of_birth }}</td>
+                        </tr>
+                        <tr>
+                            <td>Phone number</td>
+                            <td style="padding-left: 50px">{{ account.phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <td>Residential address</td>
+                            <td style="padding-left: 50px">{{ account.residential_address }}</td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td style="padding-left: 50px">{{ account.city }}</td>
+                        </tr>
+                        <tr>
+                            <td>Country</td>
+                            <td style="padding-left: 50px">{{ account.country }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a class="btn btn-primary btn-lg    " type="button" href="{%   url 'account-update' %}">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

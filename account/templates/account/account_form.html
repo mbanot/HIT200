@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Account Details{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card col-md-10 col-lg-6" style="margin: 15px auto">
+            <div class="col-md-10" style="margin: 15px auto">
+                {#        <div class="col-sm-6 col-sm-offset-3 order-md-1">#}
+                <h4 class="mb-4">Account Details</h4>
+                <form class="needs-validation" action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'form_template.html' %}
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block">Update</button>
+                        <a class="btn btn-danger btn-lg btn-block" href="{% url 'account' %}">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

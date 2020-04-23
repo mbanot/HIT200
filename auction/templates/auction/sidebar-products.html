@@ -1,0 +1,15 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        <div class="nav flex-column">
+            <span class="p-2" style="font-size: larger">
+                Categories <hr>
+            </span>
+            {% for category in categories %}
+                <a class="nav-link" href="#">
+                    <span data-feather="file"></span>
+                    {{category}}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</nav>

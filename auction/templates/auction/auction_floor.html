@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        {% include 'auction/sidebar-products.html' %}
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" style="padding-right: 100px">
+            <h3>Products</h3>
+            <input class="form-control form-control w-100" type="text" placeholder="Search" aria-label="Search">
+            <br>
+            {% include 'auction/products.html' %}
+        </main>
+    </div>
+{% endblock %}
