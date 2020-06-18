@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import generic
 from django.views.generic import UpdateView
 
 from .forms import AccountRegistrationForm, AccountAuthenticationForm, AccountUpdateForm
@@ -18,7 +19,7 @@ def registration_view(request):
             raw_password = form.cleaned_data.get('password1')
             account = authenticate(email=email, password=raw_password)
             login(request, account)
-            return redirect('index')
+            return redirect('auction:index')
         else:
             context['form'] = form
     else:
@@ -33,7 +34,7 @@ def login_view(request):
 
     user = request.user
     if user.is_authenticated:
-        redirect('index')
+        redirect('auction:index')
 
     if request.POST:
         form = AccountAuthenticationForm()
@@ -43,7 +44,7 @@ def login_view(request):
             user = authenticate(email=email, password=password)
             if user:
                 login(request, user)
-                return redirect('index')
+                return redirect('auction:index')
     else:
         form = AccountAuthenticationForm()
 
@@ -53,7 +54,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('account:login')
 
 
 def account_view(request):
@@ -65,7 +66,7 @@ def account_view(request):
 def account_update(request):
 
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('account:login')
 
     template_name = 'account/account_form.html'
     context = {}

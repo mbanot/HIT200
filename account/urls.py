@@ -2,6 +2,7 @@ from django.conf.urls import url
 from . import views as norm_views
 from django.contrib.auth import views as auth_views
 
+app_name = 'account'
 
 urlpatterns = [
     url(r'^register/$', norm_views.registration_view, name='register'),

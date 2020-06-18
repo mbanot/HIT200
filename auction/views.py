@@ -1,25 +1,21 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic import CreateView
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+from django.utils.timezone import now
+from django.views import View
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
 from .forms import ProductForm
 from .models import Product, Category, Auction
 
 
-# class IndexView(generic.ListView):
-#     template_name = 'index.html'
-#     context_object_name = {'all_products'}
-#
-#     def get_queryset(self):
-#         return Product.objects.all()
 def index_view(request):
     template_name = 'index.html'
     context = {
-        'auctions': Auction.objects.all(),
-        'categories': Category.objects.order_by('category')}
+        'auctions': Auction.objects.filter(date_end__gte=now(), date_start__lte=now()),
+        'categories': Category.objects.order_by('category')
+    }
     return render(request, template_name, context)
 
 
@@ -31,7 +27,8 @@ class ProductCreate(CreateView):
         self.object = form.save(commit=False)
         self.object.account = self.request.user
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('auction:dashboard'))
+        # return HttpResponseRedirect(self.get_success_url())
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(ProductCreate, self).get_form_kwargs(*args, **kwargs)
@@ -43,8 +40,8 @@ class ProductCreate(CreateView):
 def dashboard(request):
     template_name = 'auction/dashboard.html'
     context = {
-        'products': Product.objects.all(),
-        'account': request.user
+        'products': Product.objects.filter(account=request.user),
+        # 'account': request.user
     }
     return render(request, template_name, context)
 
@@ -52,7 +49,7 @@ def dashboard(request):
 def auction_floor_view(request):
     template_name = 'auction/auction_floor.html'
     context = {
-        'auctions': Auction.objects.all(),
+        'auctions': Auction.objects.filter(date_end__gte=now(), date_start__lte=now()),
         'categories': Category.objects.all()
     }
     return render(request, template_name, context)
@@ -64,3 +61,21 @@ def filter_auctions(request):
 
 def watchlist_page(request):
     return request
+
+
+def detail_view(request, pk):
+    template_name = 'auction/details.html'
+    auction = Auction.objects.filter(id=pk)
+    context = {
+        'auction': auction,
+    }
+    return render(request, template_name, context)
+
+
+class DetailView(DetailView):
+    model = Auction
+    template_name = 'auction/details.html'
+
+
+def bid(request, auction_id):
+    pass

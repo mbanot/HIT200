@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-	    <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="margin: 0; padding: 0;">
+	    <nav class="d-none d-md-block bg-light sidebar" style="margin: 0; padding: 0">
             <div class="sidebar-sticky">
-                <ul class="card nav flex-column" style="min-height: 100vh">
+                <ul class="card nav flex-column card-header" style="min-height: 100vh">
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
                             <span data-feather="home"></span>
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOYAAAB5CAMAAAAahK0fAAAAZlBMVEX///8AAAD29vZ1dXXi4uJxcXEXFxcUFBTGxsb7+/sjIyM1NTXp6elBQUHDw8O2traNjY29vb3c3Nx7e3tgYGBpaWmmpqatra3Q0NCbm5stLS0dHR1ISEiUlJRZWVnw8PBPT0+EhISBukhUAAAEF0lEQVR4nO2c2XqCMBBGBVFEURQ3BIXy/i/Z2kwQ+cPiGsI3564Gao4hk8mYdjRiGIZhGIZhGIZR4Pm+p7sPn8YOlsl0miwDG9uy7fyOZKu4yAhmZ4s4z6BxbVW5aOjiGwjcm4IbVFuXoDk2cTjtynCtKxKLQWhmY7DI7i4YhKa/Awtr55evGIJmhJJXotIlA9AM1JaWtbldY77mxVUY/uOeiotM17QV0/LGTroYrun8NFlaVuqI68zWDONmS8uKhafRmkfsPCyg1n9GZLImJqprz4MX3fXIZE17oh44XF+2BmuGEHxiygcimLCpb2rqHsH4/DiyDcNvauhoBkm127tSt5sXU3M0L9DrkyiO+CJh904D0Mxy6PRRtDipzAdwrTFN08fgQ1WRaG5ZcwpEs5bMoe+aEaTqNIIeLSWBeH6d1GRNDD572kAXicFa/OzvzdXE4LOmymxp8FLxCmZEhmhizSc5iJbwLgFYhuLVAwy9CZoZBJ85VQhWlfV/sRKvb+bmaUbQ5wVNywNq0Cj7mP/0XPMIlntRpbRzlUcuPLKaQNRXTUxsSMSuEdlTs/JD6KlmBtsulx7LCHcfxJIyhYOqKNZLTVzrZeazqS3s/X0SFKBUGVEfNaMzdLM++JSRgQhbtv37IhQLAjTvcB2FQaMoBfN3uml6Rw14OGIXYel02FfuRMJrY/p01CkFeDl0kKrpYW3wKSMzIkWk7tFzm0H4WFDwWXWRvEIZ0QwyhUVW/77fBZeLsxidDgWCAiothBDI5EjrZoM1HyoPdJiWpZvEPTiXk5U+twLFiOWixek0LW8s6cPJoeWkfYLa22qf5Fd5qwct/zxp2E6QTeheQD2YSjKrCRoynzrk6RLMms5aPbHgTE9e9dRIV+h0CT7vi6ipH58lgIWEDk1gEt+ViVg/8EBGDOeIvgUGn7FoCJsLdo2ktH5ginjQIplh8KGOrKbPW/79FgpEuDXbasgUPHwuKfNpLaa3QYnsDBom3w9EsCOJxdNWUwh4CCo54Nf535+f1TGbiOCjOsz1OBTJ/OoT8/0Ni32f4tHZV0xJn4OS4krykWioJjjlDsjM5z2SV2RGVH7Nqe/N59gUAZWSa8Xe+gUOIt6siqdGVy1Bbvbl5vLpnEDNRPzWYguq7ay0WMJlvHjTtLxxvotqY12WIy+9vb0H2cLryI3J9eNMNSbv2WVPX8iO7NYC3uPIOq0X7C89qZV8UrNHsCZrsiZraoQ1WXOAmi4wRM10BrQVAE3UVOwwWm8xUHOC97RtUFlTF6zJmqzJmhphTdZkTdbUCGuyJmuypkZYkzVZkzV1kr9fM/++RSttR5+e0OzDWX4A/yboRc2e/tPEYzytR63ZcEPcrz+cKuM79fgvX84wDMMwDMMwzND5BQKBPTtf66fIAAAAAElFTkSuQmCC"
-                                 width="100%" height="90px"> <span class="sr-only">(current)</span>
+{#                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOYAAAB5CAMAAAAahK0fAAAAZlBMVEX///8AAAD29vZ1dXXi4uJxcXEXFxcUFBTGxsb7+/sjIyM1NTXp6elBQUHDw8O2traNjY29vb3c3Nx7e3tgYGBpaWmmpqatra3Q0NCbm5stLS0dHR1ISEiUlJRZWVnw8PBPT0+EhISBukhUAAAEF0lEQVR4nO2c2XqCMBBGBVFEURQ3BIXy/i/Z2kwQ+cPiGsI3564Gao4hk8mYdjRiGIZhGIZhGIZR4Pm+p7sPn8YOlsl0miwDG9uy7fyOZKu4yAhmZ4s4z6BxbVW5aOjiGwjcm4IbVFuXoDk2cTjtynCtKxKLQWhmY7DI7i4YhKa/Awtr55evGIJmhJJXotIlA9AM1JaWtbldY77mxVUY/uOeiotM17QV0/LGTroYrun8NFlaVuqI68zWDONmS8uKhafRmkfsPCyg1n9GZLImJqprz4MX3fXIZE17oh44XF+2BmuGEHxiygcimLCpb2rqHsH4/DiyDcNvauhoBkm127tSt5sXU3M0L9DrkyiO+CJh904D0Mxy6PRRtDipzAdwrTFN08fgQ1WRaG5ZcwpEs5bMoe+aEaTqNIIeLSWBeH6d1GRNDD572kAXicFa/OzvzdXE4LOmymxp8FLxCmZEhmhizSc5iJbwLgFYhuLVAwy9CZoZBJ85VQhWlfV/sRKvb+bmaUbQ5wVNywNq0Cj7mP/0XPMIlntRpbRzlUcuPLKaQNRXTUxsSMSuEdlTs/JD6KlmBtsulx7LCHcfxJIyhYOqKNZLTVzrZeazqS3s/X0SFKBUGVEfNaMzdLM++JSRgQhbtv37IhQLAjTvcB2FQaMoBfN3uml6Rw14OGIXYel02FfuRMJrY/p01CkFeDl0kKrpYW3wKSMzIkWk7tFzm0H4WFDwWXWRvEIZ0QwyhUVW/77fBZeLsxidDgWCAiothBDI5EjrZoM1HyoPdJiWpZvEPTiXk5U+twLFiOWixek0LW8s6cPJoeWkfYLa22qf5Fd5qwct/zxp2E6QTeheQD2YSjKrCRoynzrk6RLMms5aPbHgTE9e9dRIV+h0CT7vi6ipH58lgIWEDk1gEt+ViVg/8EBGDOeIvgUGn7FoCJsLdo2ktH5ginjQIplh8KGOrKbPW/79FgpEuDXbasgUPHwuKfNpLaa3QYnsDBom3w9EsCOJxdNWUwh4CCo54Nf535+f1TGbiOCjOsz1OBTJ/OoT8/0Ni32f4tHZV0xJn4OS4krykWioJjjlDsjM5z2SV2RGVH7Nqe/N59gUAZWSa8Xe+gUOIt6siqdGVy1Bbvbl5vLpnEDNRPzWYguq7ay0WMJlvHjTtLxxvotqY12WIy+9vb0H2cLryI3J9eNMNSbv2WVPX8iO7NYC3uPIOq0X7C89qZV8UrNHsCZrsiZraoQ1WXOAmi4wRM10BrQVAE3UVOwwWm8xUHOC97RtUFlTF6zJmqzJmhphTdZkTdbUCGuyJmuypkZYkzVZkzV1kr9fM/++RSttR5+e0OzDWX4A/yboRc2e/tPEYzytR63ZcEPcrz+cKuM79fgvX84wDMMwDMMwzND5BQKBPTtf66fIAAAAAElFTkSuQmCC"#}
+{#                                 width="100%" height="90px"> <span class="sr-only">(current)</span>#}
+                            <img src="{% static 'auction/images/fi-home.svg' %}">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span data-feather="file-text"></span>
-                            <img src="data:image/png;base64,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"
-                                 width="100%" height="90px">
+                            <img src="{% static 'auction/images/fi-mail.svg' %}">
                         </a>
                     </li>
                     <li class="nav-item">
@@ -38,15 +38,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span data-feather="file-text"></span>
-                            <img src="data:image/png;base64,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"
-                                 width="100%" height="90px">
+                            <img src="{% static 'auction/images/fi-widget.svg' %}">
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <main role="main" class="ml-sm-auto col-lg-10 px-4">
             <div class="card" style="width: 100%; margin: 0 auto">
                 <div class="card-header">
                     <ul class="nav  nav-pills card-header-pills">
@@ -54,7 +53,7 @@
                             <a class="nav-link active" href="#my-products" data-toggle="tab">My Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create-product' %}">Add Products</a>
+                            <a class="nav-link" href="{% url 'auction:create-product' %}">Add Products</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#current-auctions" data-toggle="tab">Current Auctions</a>

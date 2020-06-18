@@ -28,10 +28,10 @@ class Product(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        if self.category == 'Laptops':
-            return reverse('laptops')
-        else:
-            return reverse('dashboard')
+        # if self.category == 'Laptops':
+        #     return reverse('laptops')
+        # else:
+        return reverse('dashboard')
 
     def __str__(self):
         return self.title
@@ -46,7 +46,10 @@ class Auction(models.Model):
     reserve_price = models.DecimalField(verbose_name='reserve price', decimal_places=2, max_digits=11,
                                         blank=True, null=True)
     bid_increment = models.DecimalField(verbose_name='minimum incremental bid', decimal_places=2, max_digits=11,
-                                        blank=True, null=True)
+                                        blank=True, null=True, default=1.00)
+
+    def get_absolute_url(self):
+        return reverse('auction:details', kwargs={'pk': self.pk})
 
     def __str__(self):
         return str(self.current_bid)
@@ -58,7 +61,7 @@ class Watchlist(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
 
-class Bids(models.Model):
+class Bid(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
     amount = models.DecimalField(verbose_name='bid amount', default=0.00, decimal_places=2, max_digits=11)
