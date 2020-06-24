@@ -40,7 +40,7 @@
 </style>
 <div class="card-deck">
     <div class="row row-cols-1 row-cols-md-3">
-        {% for auction in auctions %}
+        {% for auction in auction_list %}
             {% now 'd/m/Y H:i:s' as current_date %}
 {#            {% if auction.date_end < current_date %}#}
                 <div class="col-sm-5 col-md-5">
@@ -50,10 +50,18 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ auction.product.title }}</h5>
-                            <p class="card-text">{% if auction.current_bid < auction.start_bid %} $ {{ auction.start_bid }} {% else %}
-                            $ {{ auction.current_bid}}{% endif %}</p>
+                            {% for bid in bid_list %}
+                                {% if auction.id == bid.auction.id %}
+                                    {% if bid.amount > amount %}
+                                        amount = bid.amount
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <span class="card-text">${{ auction.reserve_price }}</span>
+
                             <input name="auction" value="{{ auction.id }}" type="hidden">
-                            <a href="{% url 'auction:details' auction.id %}"  type="submit" class="btn btn-primary btn-block"> View more...</a>
+                            <a href="{% url 'auction:details' auction.product.id %}"  type="submit" class="btn btn-primary btn-block"> View more...</a>
                         </div>
                     </div>
                 </div>

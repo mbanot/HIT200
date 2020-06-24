@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <button onclick="goBack()" class="btn btn-primary">Go Back</button>
+    {% if bid_list %}
+        <table class="table table-responsive-sm" style="max-width: 550px; margin: 10px auto; background-color: white">
+            <thead>
+                <th>Username</th>
+                <th>Amount</th>
+                <th>Date and time</th>
+            </thead>
+            <tbody>
+                {% for bid in bid_list %}
+                    <tr>
+                        <td>{{ bid.account.username }}</td>
+                        <td>{{ bid.amount }}</td>
+                        <td>{{ bid.created }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>No bids yet!!!</h2>
+    {% endif %}
+{% endblock %}
+{% block js %}
+    <script>
+        $('bid_form').submit(function(e){
+            e.preventDefault();
+            console.log($(this).serialize())
+
+
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+{% endblock %}

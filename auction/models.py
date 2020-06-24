@@ -1,9 +1,11 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
 from account.models import Account
 
 
 class Category(models.Model):
+
     category = models.CharField(max_length=30)
 
     def __str__(self):
@@ -38,15 +40,14 @@ class Product(models.Model):
 
 
 class Auction(models.Model):
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     current_bid = models.DecimalField(verbose_name='current winning bid', decimal_places=2, max_digits=11, default=0.00)
     date_start = models.DateTimeField(verbose_name='auction start date', auto_created=True)
     date_end = models.DateTimeField(verbose_name='auction end date', auto_created=True)
-    start_bid = models.DecimalField(verbose_name='starting bid amount', decimal_places=2, default=1.00, max_digits=11)
-    reserve_price = models.DecimalField(verbose_name='reserve price', decimal_places=2, max_digits=11,
-                                        blank=True, null=True)
-    bid_increment = models.DecimalField(verbose_name='minimum incremental bid', decimal_places=2, max_digits=11,
-                                        blank=True, null=True, default=1.00)
+    start_bid = models.IntegerField(verbose_name='starting bid amount', default=1)
+    reserve_price = models.IntegerField(verbose_name='reserve price', default=1)
+    bid_increment = models.IntegerField(verbose_name='minimum incremental bid', blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('auction:details', kwargs={'pk': self.pk})
@@ -56,13 +57,19 @@ class Auction(models.Model):
 
 
 class Watchlist(models.Model):
+
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
 
 class Bid(models.Model):
+
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    amount = models.DecimalField(verbose_name='bid amount', default=0.00, decimal_places=2, max_digits=11)
-    bid_time = models.DateTimeField(auto_now_add=True)
+    amount = models.IntegerField(verbose_name='bid amount')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.account)
