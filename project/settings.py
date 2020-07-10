@@ -142,3 +142,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SECURE_SSL_REDIRECT = False
 
+LOGIN_REDIRECT_URL = "/auction/"
+LOGIN_URL = "/account/login/"
+
+LOGOUT_REDIRECT_URL = "/account/login/"
+LOGOUT_URL = "/account/logout/"

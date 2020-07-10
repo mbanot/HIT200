@@ -3,16 +3,6 @@
 
 {% block content %}
     <div class="container-fluid">
-    <style>
-            input::-webkit-outer-spin-button,
-            input::-webkit-inner-spin-button {
-              -webkit-appearance: none;
-              margin: 0;
-            }
-            input[type=number] {
-              -moz-appearance: textfield;
-            }
-        </style>
         <button onclick="goBack()" class="btn btn-primary">Go Back</button>
         {% if alert %}
             <span class="alert-success alert-dismissible">{{ alert }}</span>
@@ -31,7 +21,7 @@
                                 {% else %}
                                     <span class="">${{ auction.reserve_price }}</span>
                                 {% endif %}
-                                {% if request.user.is_authenticated %}
+{#                                {% if request.user.is_authenticated %}#}
                                     {% if request.user.id  !=  auction.product.account.id %}
                                         <div class="error">
                                             {% if error %}
@@ -51,7 +41,7 @@
                                             </div>
                                         </form>
                                     {% endif %}
-                                {% endif %}
+{#                                {% endif %}#}
                                 <a href="{% url 'auction:bidder-list' auction_list.id %}" style="margin-left: 25%">
                                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                                     View bidders list</a>
@@ -78,16 +68,8 @@
 {% endblock %}
 {% block js %}
     <script>
-        $('bid_form').submit(function(e){
-            e.preventDefault();
-            console.log($(this).serialize())
-
-
-        });
-
         function goBack() {
             window.history.back();
         }
     </script>
-
 {% endblock %}

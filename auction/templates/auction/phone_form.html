@@ -1,22 +1,33 @@
 {% extends 'base.html' %}
-{% block title %}Add Product{% endblock %}
+{% block title %}Add Phone{% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
+    <button onclick="goBack()" class="btn btn-primary">Go Back</button>
     <div class="container">
         <div class="row">
             <div class="card col-md-10 col-lg-6" style="margin: 15px auto">
-{#            <div class="col-sm-6 col-sm-offset-3 order-md-1">#}
                 <div class="col-md-10" style="margin: 15px auto">
-                    <h4 class="mb-4">Add Product</h4>
+                    <h4 class="mb-4">Add Phone</h4>
                     <form class="needs-validation" action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {% include 'form_template.html' %}
+                         {{ form|crispy }}
+{#                        {% include 'form_template.html' %}#}
                         <div class="form-group">
                             <button class="btn btn-primary btn-lg btn-block">Add Product</button>
-                            <a class="btn btn-danger btn-lg btn-block" href="{% url 'auction:dashboard' %}">Cancel</a>
+                            <a class="btn btn-danger btn-lg btn-block" href="{% url 'auction:index' %}">Cancel</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 {% endblock %}

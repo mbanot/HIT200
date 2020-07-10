@@ -1,0 +1,27 @@
+{% if auctions %}
+    {% for auction in auctions %}
+        <div class="card mb-1" style="padding-bottom: 10px; margin-bottom: 10px; max-width: 600px">
+            <div class="row no-gutters">
+                <div class="col-md-4 col-sm-3">
+                    <div class="card-image">
+                        <img src="{{ auction.phone.image.url }}"class="img-responsive" style="padding: 7px;" width="90%">
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-7">
+                     <div class="card-body">
+                         <h5 class="card-title">{{ auction.title }}</h5>
+                         <p class="card-text">
+                             <span>{{ auction.phone.condition }} | </span>
+                            <span class="card-title">{{ auction.phone.notes }}</span>
+                         </p>
+    {#                    <a class="btn btn-danger float-right" href="{% url 'auction:delete-product' product.id %}"#}
+    {#                       style="margin-left: 20px"><span class="glyphicon glyphicon-trash">Delete</span></a>#}
+                        <a class="btn btn-primary float-right" href="#">View more...</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <h3>There are currently no ongoing auctions!!</h3>
+{% endif %}

@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <button onclick="goBack()" class="btn btn-primary">Go Back</button>
+    <div class="row" style="margin-top: 15px">
+        <div class="col-md-3 col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-sm-12" style="margin: 15px auto">
+                        <img src="{{ product.image.url }}" style="margin: auto 0" width="100%">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <li><a href="#" style="padding-left: 20px"><span
+                                    class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a></li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                    <h1 style="size: 0.1em">{{ product.title }}</h1>
+                    hey there
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block js %}
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+{% endblock %}

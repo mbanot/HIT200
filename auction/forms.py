@@ -1,21 +1,20 @@
 from django import forms
-from django.views.decorators.clickjacking import xframe_options_sameorigin
 
-from .models import Product, Bid
+from .models import Phone, Bid
 
 
-class ProductForm(forms.ModelForm):
+class PhoneCreationForm(forms.ModelForm):
     class Meta:
-        model = Product
-        fields = ['title', 'image', 'condition', 'notes', 'category']
+        model = Phone
+        fields = ['brand', 'model', 'image', 'condition', 'operating_system', 'colour', 'storage_capacity',
+                  'ram', 'processor_type', 'processor_speed', 'camera', 'screen_type', 'screen_size', 'notes']
         exclude = ('account',)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('account')
-        super(ProductForm, self).__init__(*args, **kwargs)
+        super(PhoneCreationForm, self).__init__(*args, **kwargs)
 
 
-@xframe_options_sameorigin
 class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
