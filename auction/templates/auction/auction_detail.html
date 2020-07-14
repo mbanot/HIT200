@@ -2,70 +2,73 @@
 {% load rest_framework %}
 
 {% block content %}
-    <div class="container-fluid">
-        <button onclick="goBack()" class="btn btn-primary">Go Back</button>
-        {% if alert %}
-            <span class="alert-success alert-dismissible">{{ alert }}</span>
-        {% endif %}
-        <div class="row" style="margin-top: 15px">
-            <div class="col-md-3 col-xs-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-sm-12" style="margin: 15px auto">
-                            <img src="{{ auction.product.image.url }}" style="margin: auto 0" width="100%">
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                {% if bid %}
-                                    <span class="">${{ bid.amount }}</span>
-                                {% else %}
-                                    <span class="">${{ auction.reserve_price }}</span>
-                                {% endif %}
-{#                                {% if request.user.is_authenticated %}#}
-                                    {% if request.user.id  !=  auction.product.account.id %}
-                                        <div class="error">
-                                            {% if error %}
-                                                {{ error }}
+    {% for phone in phones %}
+        {% if auction.product_id == phone.id %}
+            <div class="container-fluid">
+                <button onclick="goBack()" class="btn btn-primary">Go Back</button>
+                {% if alert %}
+                    <span class="alert-success alert-dismissible">{{ alert }}</span>
+                {% endif %}
+                <div class="row" style="margin-top: 15px">
+                    <div class="col-md-3 col-xs-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-sm-12" style="margin: 15px auto">
+                                    <img src="{{ phone.image.url }}" style="margin: auto 0" width="100%">
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {% if bid %}
+                                            <span class="">${{ bid.amount }}</span>
+                                        {% else %}
+                                            <span class="">${{ auction.starting_bid }}</span>
+                                        {% endif %}
+                                            {% if request.user.id  !=  phone.account.id %}
+                                                <div class="error">
+                                                    {% if error %}
+                                                        {{ error }}
+                                                    {% endif %}
+                                                </div>
+                                                <form action="{% url 'auction:save-bid' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="amount" name="amount"
+                                                               placeholder="Enter your bid amount" required><br>
+                                                        <input type="hidden" value='{{ auction.starting_bid }}'
+                                                               name="starting_bid" id="starting_bid">
+                                                        <input type="hidden" value='{{ auction.id }}' name="auction_id"
+                                                               id="auction_id">
+                                                        <button class="btn btn-lg btn-block btn-success" type="submit">Bid</button>
+                                                    </div>
+                                                </form>
                                             {% endif %}
-                                        </div>
-                                        <form action="{% url 'auction:save-bid' %}" method="POST">
-                                            {% csrf_token %}
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="amount" name="amount"
-                                                       placeholder="Enter your bid amount" required><br>
-                                                <input type="hidden" value='{{ auction.reserve_price }}'
-                                                       name="reserve_price" id="reserve_price">
-                                                <input type="hidden" value='{{ auction.id }}' name="auction_id"
-                                                       id="auction_id">
-                                                <button class="btn btn-lg btn-block btn-success" type="submit">Bid</button>
-                                            </div>
-                                        </form>
-                                    {% endif %}
-{#                                {% endif %}#}
-                                <a href="{% url 'auction:bidder-list' auction_list.id %}" style="margin-left: 25%">
-                                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                                    View bidders list</a>
-                                {% if  request.user.id == auction.account.id %}
-{#                                    <li><a href="{% url 'delete_product' product_list.id %}" style="padding-left: 20px"><span#}
-{#                                            class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a></li>#}
-                                {% endif %}
+                                        <a href="{% url 'auction:bidder-list' auction.id %}" style="margin-left: 25%">
+                                            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                                            View bidders list</a>
+                                        {% if  request.user.id == phone.id %}
+        {#                                    <li><a href="{% url 'delete_product' product_list.id %}" style="padding-left: 20px"><span#}
+        {#                                            class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a></li>#}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-xs-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 style="size: 0.1em">{{ phone }}</h1>
+                                hey there
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-9 col-xs-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h1 style="size: 0.1em">{{ auction.product.title }}</h1>
-                        hey there
-                    </div>
-                </div>
-            </div>
-        </div>
 
-    </div>
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
+
 {% block js %}
     <script>
         function goBack() {

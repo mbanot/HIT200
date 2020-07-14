@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load rest_framework %}
 
 {% block content %}
         <button onclick="goBack()" class="btn btn-primary">Go Back</button>
@@ -8,8 +7,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="col-sm-12" style="margin: 15px auto">
-                            <img src="{{ product.image.url }}" style="margin: auto 0" width="100%">
+                            <img src="{{ phone.image.url }}" style="margin: auto 0" width="100%">
                         </div>
+                        <form action="{% url 'auction:start-auction' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ phone.id }}">
+                            <input type="hidden" name="model_type" value="Phone">
+                            <a class="btn btn-danger float-right" href="{% url 'auction:delete-phone' phone.id %}"
+                                    style="margin-left: 20px; margin-right: 10px"><span class="fa fa-trash-o"></span></a>
+                            <button class="btn btn-primary float-right"
+                               type="submit" value="Submit"
+                                    style="margin-left: 20px"><span class="fa fa-plus-circle">&nbsp;Start Auction</span></button>
+                        </form>
                         <div class="row">
                             <div class="col-sm-12">
                             </div>
@@ -20,13 +29,12 @@
             <div class="col-md-9 col-xs-12">
                 <div class="card">
                     <div class="card-body">
-                        <h1 style="size: 0.1em">{{ product.title }}</h1>
+                        <h1 style="size: 0.1em">{{ phone }}</h1>
                         hey there
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}
 {% block js %}

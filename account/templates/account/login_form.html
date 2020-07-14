@@ -8,6 +8,9 @@
     {#            <div class="col-sm-6 col-sm-offset-3 order-md-1">#}
                 <div class="col-md-10" style="margin: 15px auto">
                     <h3 class="mb-4">Sign In</h3>
+                    {% if form.errors %}
+                        <p>Your username and password didn't match. Please try again.</p>
+                    {% endif %}
                     <form class="needs-validation" action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% include 'form_template.html' %}

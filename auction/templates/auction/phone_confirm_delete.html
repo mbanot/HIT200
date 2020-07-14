@@ -2,18 +2,18 @@
 
 {% block content %}
     <div class="container">
-        <button onclick="goBack()" class="btn btn-primary">Go Back</button>
         <div class="row">
             <div class="card col-md-10 col-lg-6" style="margin: 15px auto">
                 <div class="col-md-10" style="margin: 15px auto">
                     <h4>Delete Product</h4>
                     <form action="" method="post">
                         {% csrf_token %}
-                        <p class="text-danger">Are you sure you want to delete {{ product.title }}?</p>
-                        <img src="{{ product.image.url }}" class="img-responsive img-fluid"
+                        <p class="text-danger">Are you sure you want to delete {{ phone }}?</p>
+                        <img src="{{ phone.image.url }}" class="img-responsive img-fluid"
                         style="margin: auto 0">
                         <button class="btn btn-lg btn-block btn-dark" type="submit"
                         style="margin-top: 20px">Confirm</button>
+                        <input type="submit" name="Cancel" value="Cancel" class="btn btn-lg btn-block btn-outline-danger"/>
                     </form>
                 </div>
             </div>

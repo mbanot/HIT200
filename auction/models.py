@@ -8,6 +8,9 @@ from account.models import Account
 
 class Category(models.Model):
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     category = models.CharField(max_length=30)
     view = models.CharField(max_length=50)
 
@@ -60,22 +63,19 @@ class Phone(models.Model):
 
 
 class Auction(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
 
-    current_bid = models.DecimalField(verbose_name='current winning bid', decimal_places=2, max_digits=11, default=0.00)
-    date_start = models.DateTimeField(verbose_name='auction start date', auto_created=True)
-    date_end = models.DateTimeField(verbose_name='auction end date', auto_created=True)
-    start_bid = models.IntegerField(verbose_name='starting bid amount', default=1)
-    reserve_price = models.IntegerField(verbose_name='reserve price', default=1)
+    model_type = models.CharField(max_length=50)
+    product_id = models.PositiveIntegerField()
+    starting_date_and_time = models.DateTimeField(auto_created=True, help_text='Please use the following date and time format: mm/DD/YYYY HH:MM')
+    ending_date_and_time = models.DateTimeField(auto_created=True, help_text='Please use the following date and time format: mm/DD/YYYY HH:MM')
+    starting_bid = models.IntegerField(verbose_name='starting bid amount', default=1)
     bid_increment = models.IntegerField(verbose_name='minimum incremental bid', blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('auction:details', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return str(self.content_object)
+        return str(self.product_id)
 
 
 class Watchlist(models.Model):

@@ -42,33 +42,40 @@
         font-size: 0.70rem;
     }
 </style>
-{% if phones %}
+{% if phonesAuction.count > 0 %}
+    <br>
+        <div class="card" style="width: 100%; height: 80px; margin-bottom: 10px">
+            <div class="card-body" style="background-color: white">
+                <h1>Phones</h1>
+            </div>
+        </div>
     <div class="card-deck">
         <div class="row row-cols-1 row-cols-md-3">
-            {% for phone in phones %}
-                {% now 'd/m/Y H:i:s' as current_date %}
-                <div class="col-sm-5 col-md-5">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="{{ phone.content_object.image.url }}" class="card-img-top">
+            {% for phoneAuction in phonesAuction %}
+                {% for phone in phones %}
+                    {% if phone.id == phoneAuction.product_id %}
+                        <div class="col-sm-5 col-md-5">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="{{ phone.image.url }}" class="card-img-top">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ phone }}</h5>
+                                    {% if bid.auction_id == phoneAuction.id %}
+                                        <span class="card-text">{{ bid.amount }}</span>
+                                    {% else %}
+                                        <span class="card-text">${{ phoneAuction.starting_bid }}</span>
+                                    {% endif %}
+                                <br>
+                                    <span class="card-text end-time fa fa-clock-o">&nbsp;Ending at {{ phoneAuction.ending_date_and_time }}</span>
+                                    <input name="auction" value="{{ phoneAuction.id }}" type="hidden">
+                                    <a href="{% url 'auction:details' phone.id %}"  type="submit" class="btn btn-primary btn-block"> View more...</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ phone.content_object }}</h5>
-                            {% if amount %}
-                                <span class="card-text">{{ amount }}</span>
-                            {% else %}
-                                <span class="card-text">${{ phone.reserve_price }}</span>
-                            {% endif %}
-                        <br>
-                            <span class="card-text end-time">Ending at {{ phone.date_end }}</span>
-                            <input name="auction" value="{{ phone.id }}" type="hidden">
-                            <a href=""  type="submit" class="btn btn-primary btn-block"> View more...</a>
-                        </div>
-                    </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </div>
     </div>
-{% else %}
-    <h3>There are currently no ongoing auctions.</h3>
 {% endif %}

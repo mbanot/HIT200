@@ -90,3 +90,18 @@ def account_update(request):
         )
         context['form'] = form
     return render(request, template_name, context)
+
+
+def password_reset_done(request,
+                        template_name='registration/password_reset_done.html',
+                        current_app=None, extra_context=None):
+    context = {
+        'title': _('Password reset sent'),
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+
+    if current_app is not None:
+        request.current_app = current_app
+
+    return TemplateResponse(request, template_name, context)

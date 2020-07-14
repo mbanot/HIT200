@@ -1,22 +1,29 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from django.urls import reverse
 from django.utils.timezone import now
-from django.views import View
 from django.views.generic import CreateView, DetailView, DeleteView, ListView, UpdateView
+import datetime
 
-from .forms import PhoneCreationForm, BidForm
+from django.views.generic.base import View
+
+from .forms import PhoneCreationForm, AuctionStartForm
 from .models import Phone, Category, Auction, Bid
 
 
 def index_view(request):
     template_name = 'index.html'
+
+    phonesAuction = Auction.objects.filter(model_type='Phone', ending_date_and_time__gte=now(),
+                                     starting_date_and_time__lte=now())
+    bid = Bid.objects.all()
+    phones = Phone.objects.all()
     context = {
-        'auctions': Auction.objects.filter(date_end__gte=now(), date_start__lte=now()),
-        'categories': Category.objects.order_by('category'),
-        'bid_list': Bid.objects.all()
+        'categories': Category.objects.all().order_by('category'),
+        'phonesAuction': phonesAuction,
+        'phones': phones,
+        'bid': bid,
     }
     return render(request, template_name, context)
 
@@ -46,27 +53,32 @@ class PhoneCreateView(CreateView):
         return kwargs
 
 
-# class ProductListView(ListView):
-#     model = Product
-#
-#     def get_queryset(self):
-#         return Product.objects.filter(account=self.request.user)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ProductListView, self).get_context_data(**kwargs)
-#         context['account'] = self.request.user
-#         return context
+def my_products(request):
+    template_name = 'auction/product_list.html'
+    context = {
+        'phones': Phone.objects.filter(account=request.user)
+    }
+    return render(request, template_name, context)
 
 
-# class ProductDetailView(DetailView):
-#     model = Product
-#     context_object_name = 'product_list'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ProductDetailView, self).get_context_data(**kwargs)
-#         # x = Auction.objects.all()
-#         context["product"] = Product.objects.get(id=self.kwargs['pk'])
-#         return context
+class PhoneListView(ListView):
+    model = Phone
+
+    def get_context_data(self, **kwargs):
+        context = super(PhoneListView, self).get_context_data(**kwargs)
+        context['phone_list'] = Phone.objects.filter(account=self.request.user)
+        return context
+    paginate_by = 20
+
+
+class PhoneDetailView(DetailView):
+    model = Phone
+    context_object_name = 'phone_list'
+
+    def get_context_data(self, **kwargs):
+        context = super(PhoneDetailView, self).get_context_data(**kwargs)
+        context["phone"] = Phone.objects.get(id=self.kwargs['pk'])
+        return context
 
 
 class PhoneUpdateView(UpdateView):
@@ -75,12 +87,33 @@ class PhoneUpdateView(UpdateView):
               'ram', 'processor_type', 'processor_speed', 'camera', 'screen_type', 'screen_size', 'notes']
 
 
+class AuctionStart(View):
+    template_name = 'auction/auction_form.html'
+    form_class = AuctionStartForm
+
+    def get(self, request):
+        form = self.form_class(None)
+        form.model_type = self.request.POST['model_type']
+        form.product_id = self.request.POST['product_id']
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('auction:my-products'))
+        return render(request, self.template_name, {'form': form})
+
+
 class CurrentAuctionsListView(ListView):
     model = Auction
 
     def get_queryset(self):
-
-        return Auction.objects.filter(date_end__gte=now(), date_start__lte=now())
+        # Auction.objects.filter(content_type=content_type, date_end__gte=now(),
+        #                                            date_start__lte=now())
+        return Auction.objects.filter(ending_date_and_time__gte=now(), starting_date_and_time__lte=now())
 
     def get_context_data(self, **kwargs):
         context = super(CurrentAuctionsListView, self).get_context_data(**kwargs)
@@ -92,7 +125,7 @@ class ClosedAuctionsListView(ListView):
     model = Auction
 
     def get_queryset(self):
-        return Auction.objects.filter(product__account=self.request.user, date_end__lte=now())
+        return Auction.objects.filter(product__account=self.request.user, ending_date_and_time__lte=now())
 
     def get_context_data(self, **kwargs):
         context = super(ClosedAuctionsListView, self).get_context_data(**kwargs)
@@ -127,19 +160,16 @@ class ClosedAuctionsListView(ListView):
 #
 #     return render(request, template_name, context)
 
-
-def auction_floor_view(request):
-    # instance = get_list_or_404(Phone, )
-    template_name = 'auction/auction_list.html'
-    context = {
-        'auction_list': Auction.objects.filter(date_end__gte=now(), date_start__lte=now()),
-        'categories': Category.objects.all().order_by('category'),
-        'bid_list': Bid.objects.all(),
-    }
-    content_type = ContentType.objects.get_for_model(Phone)
-    # obj_id = instance.id
-    context['phones'] = Auction.objects.filter(content_type=content_type)
-    return render(request, template_name, context)
+#
+# def auction_floor_view(request):
+#     template_name = 'auction/auction_list.html'
+#     context = {
+#         'auction_list': Auction.objects.filter(ending_date_and_time__gte=now(), starting_date_and_time__lte=now()),
+#         'categories': Category.objects.all().order_by('category'),
+#         'bid_list': Bid.objects.all(),
+#         'phones': Auction.objects.filter(model_type='Phone')
+#     }
+#     return render(request, template_name, context)
 
 
 def filter_auctions(request):
@@ -152,30 +182,33 @@ def watchlist_page(request):
 
 def detail_view(request, pk):
     template_name = 'auction/auction_detail.html'
-    auction = Auction.objects.filter(id=pk)
+    auction = Auction.objects.filter(product_id=pk)[0]
+    bid = Bid.objects.filter(auction_id=auction.id).last()
+    phones = Phone.objects.all()
     context = {
         'auction': auction,
+        'phones': phones,
+        'bid': bid,
     }
     return render(request, template_name, context)
 
 
-class AuctionDetailView(DetailView):
-    model = Auction
-    context_object_name = 'auction_list'
-
-    def get_context_data(self, **kwargs):
-        context = super(AuctionDetailView, self).get_context_data(**kwargs)
-        # x = Auction.objects.all()
-        context["auction"] = Auction.objects.get(product__auction=self.kwargs['pk'])
-        context['bid'] = Bid.objects.filter(auction=self.kwargs['pk']).last
-        return context
+# class AuctionDetailView(DetailView):
+#     model = Auction
+#     context_object_name = 'auction_list'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(AuctionDetailView, self).get_context_data(**kwargs)
+#         context["auction"] = Auction.objects.get(product_id=self.kwargs['pk'])
+#         context['bid'] = Bid.objects.filter(auction=self.kwargs['pk']).last
+#         return context
 
 
 class BidderListView(ListView):
     model = Bid
 
     def get_queryset(self):
-        return Bid.objects.filter(auction_id=self.kwargs['pk']).order_by('created').reverse()
+        return Bid.objects.filter(auction_id=self.kwargs['pk']).order_by('timestamp').reverse()
 
     def get_context_data(self, **kwargs):
         context = super(BidderListView, self).get_context_data(**kwargs)
@@ -188,8 +221,8 @@ def save_bid(request):
     context['auction_list'] = Auction.objects.get(id=request.POST.get('auction_id'))
     context['auction'] = Auction.objects.get(id=request.POST.get('auction_id'))
     if request.method == 'POST':
-        if int(request.POST.get('reserve_price')) > int(request.POST.get('amount')):
-            context['error'] = "Bid amount should be more than reserve price"
+        if int(request.POST.get('starting_bid')) > int(request.POST.get('amount')):
+            context['error'] = "Bid amount should be more than the starting bid"
             return render(request, 'auction/auction_detail.html', context)
         else:
 
@@ -217,7 +250,7 @@ def save_bid(request):
                     obj.save()
                     context['alert'] = "The bid has been successfully made."
                     # auction = Auction.objects.get(id=request.POST.get('auction_id'))
-                    return HttpResponseRedirect(reverse('auction:auction-floor'))
+                    return HttpResponseRedirect(reverse('auction:index'))
     return render(request, 'auction/auction_detail.html', context)
 
 
@@ -230,4 +263,11 @@ class PhoneDeleteView(DeleteView):
         return context
 
     def get_success_url(self):
-        return reverse('auction:my-products')
+        return reverse('auction:my-phones')
+
+    def post(self, request, *args, **kwargs):
+        if "Cancel" in request.POST:
+            url = self.get_success_url()
+            return HttpResponseRedirect(url)
+        else:
+            return super(PhoneDeleteView, self).post(request, *args, **kwargs)

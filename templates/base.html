@@ -15,13 +15,14 @@
             }
         </style>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+{#        <script src="https://kit.fontawesome.com/baf3c3ee61.js" crossorigin="anonymous"></script>#}
 
 
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
             <h5 class="my-0 mr-md-auto font-weight-normal" href="{%  url 'auction:index' %}" id="top">Auction</h5>
             <nav class="my-2 my-md-0 mr-md-3">
                 <a class="p-2 text-dark active" href="{% url 'auction:index' %}">Home</a>
-                <a class="p-2 text-dark" href="{% url 'auction:auction-floor' %}">Auction Floor</a>
+{#                <a class="p-2 text-dark" href="{% url 'auction:auction-floor' %}">Auction Floor</a>#}
                 <a class="dropdown">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="" id="dashDropdown" role="button">
                         Dashboard<span class="caret"></span>
@@ -29,7 +30,7 @@
                     <div class="dropdown-menu" aria-labelledby="dashDropdown">
                         <a class="dropdown-item">Buyer</a>
                         <a class="dropdown-item">Seller</a>
-                        <a class="dropdown-item dropdown-header" href="">&emsp;My Products</a>
+                        <a class="dropdown-item dropdown-header" href="{% url 'auction:my-products' %}">&emsp;My Products</a>
                         <a class="dropdown-item dropdown-header" href="{% url 'auction:create-product' %}">&emsp;Add Product</a>
                         <a class="dropdown-item dropdown-header" href="{% url 'auction:current-auctions' %}">&emsp;Current Auctions</a>
                         <a class="dropdown-item dropdown-header" href="{% url 'auction:closed-auctions' %}">&emsp;Closed Auctions</a>

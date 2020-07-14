@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Add Phone{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <button onclick="goBack()" class="btn btn-primary">Go Back</button>
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-10 col-lg-6" style="margin: 15px auto">
+                <div class="col-md-10" style="margin: 15px auto">
+                    <h4 class="mb-4">Start Auction for {{ phone }}</h4>
+                    <form class="" action="" method="post">
+                        {% csrf_token %}
+                         {{ form|crispy }}
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" value="Submit">
+                                Start Auction</button>
+                            <a class="btn btn-danger btn-lg btn-block" href="{% url 'auction:my-products' %}">Cancel</a>
+                        </div>
+                        <input type="hidden" name="object_id" value="{{ object_id }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        function newfunc() {
+            print("button has been clicked")
+        }
+    </script>
+{% endblock %}

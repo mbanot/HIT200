@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^account/', include('account.urls')),
     url(r'^auction/', include('auction.urls')),
+    url(r'^', include('auction.urls')),
 ]
 
 if settings.DEBUG:
