@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        {% include 'auction/sidebar-products.html' %}
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" style="padding-right: 100px">
+            <div class="panel col-md-12" style=" margin-bottom: 10px; background-color: white; color: cornflowerblue">
+                <div class="panel-body">
+                    <h1>Phones</h1>
+                </div>
+            </div>
+{#            <input class="form-control form-control w-100" type="text" placeholder="Search" aria-label="Search">#}
+            <style>
+                .card-deck {
+                    align-content: center;
+                }
+                .card {
+                    width: 200px;
+                    height: 315px;
+                    margin-left: 10px;
+                    margin-top: 10px;
+                }
+                .card-image {
+                    height: 150px;
+                    display: block;
+                    margin: auto;
+                }
+                .card-body {
+                    color: cornflowerblue;
+                }
+                .card-img-top {
+                    padding: 12px 7px 7px 7px;
+                    display: block;
+                    position: relative;
+                    margin: auto;
+                    max-height: 100%;
+                }
+                .card-text {
+                    color: green;
+                    position: absolute;
+                    {#bottom: 45px;#}
+                    {#right: 30px;#}
+                }
+                .card:hover {
+                    transform: scale(1.02);
+                    box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+                }
+                .btn-primary {
+                    position: absolute;
+                    width: 80%;
+                    bottom: 10px;
+                }
+                .end-time {
+                    color: red;
+                    font-size: 0.70rem;
+                }
+                .panel {
+                    box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+                }
+                .hover:hover {
+                    transform: scale(1.03);
+                }
+            </style>
+            {% if phonesAuction.count > 0 %}
+                <br>
+                <div class="card-deck">
+                    <div class="row row-cols-1 row-cols-md-3">
+                        {% for phoneAuction in phonesAuction %}
+                            {% for phone in phones %}
+                                {% if phone.id == phoneAuction.product_id %}
+                                    <div class="col-sm-3 col-md-3">
+                                        <div class="card">
+                                            <div class="card-image">
+                                                <img src="{{ phone.image.url }}" class="card-img-top">
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ phone }}</h5>
+                                                {% if bid.auction_id == phoneAuction.id %}
+                                                    <span class="card-text">{{ bid.amount }}</span>
+                                                {% else %}
+                                                    <span class="card-text">${{ phoneAuction.starting_bid }}</span>
+                                                {% endif %}
+                                            <br>
+                                                <span class="card-text end-time fa fa-clock-o">&nbsp;Ending at {{ phoneAuction.ending_date_and_time }}</span>
+                                                <input name="auction" value="{{ phoneAuction.id }}" type="hidden">
+                                                <a href="{% url 'auction:details' phone.id %}"  type="submit" class="btn btn-primary btn-block"> View more...</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+{% endblock %}

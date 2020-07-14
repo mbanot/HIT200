@@ -13,11 +13,18 @@
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ phone.id }}">
                             <input type="hidden" name="model_type" value="Phone">
-                            <a class="btn btn-danger float-right" href="{% url 'auction:delete-phone' phone.id %}"
-                                    style="margin-left: 20px; margin-right: 10px"><span class="fa fa-trash-o"></span></a>
-                            <button class="btn btn-primary float-right"
-                               type="submit" value="Submit"
-                                    style="margin-left: 20px"><span class="fa fa-plus-circle">&nbsp;Start Auction</span></button>
+{#                            {% for auction in auctions %}#}
+{#                                {% if auction.product_id == phone.id %}#}
+                                    <a class="btn float-right" href="{% url 'auction:update-phone' phone.id %}"
+                                            style="background-color: #f0a00f; margin-left: 20px">Update</a>
+{#                                {% else %}#}
+                                    <a class="btn btn-danger float-right" href="{% url 'auction:delete-phone' phone.id %}"
+                                        style="margin-left: 20px">Delete</a>
+
+                                    <button class="btn btn-primary float-right" type="submit" value="Submit"
+                                        style="margin-left: 20px; margin-top: 10px">Start Auction</button>
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
                         </form>
                         <div class="row">
                             <div class="col-sm-12">
@@ -30,13 +37,55 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 style="size: 0.1em">{{ phone }}</h1>
-                        hey there
+                            <table class="table ">
+                                <tr>
+                                    <td>Make:</td>
+                                    <td>{{ phone.brand }}</td>
+                                    <td>Model:</td>
+                                    <td>{{ phone.model }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Condition:</td>
+                                    <td>{{ phone.condition }}</td>
+                                    <td>Operating System:</td>
+                                    <td>{{ phone.operating_system }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Colour:</td>
+                                    <td>{{ phone.colour }}</td>
+                                    <td>Storage Capacity:</td>
+                                    <td>{{ phone.storage_capacity }}</td>
+                                </tr>
+                                <tr>
+                                    <td>RAM:</td>
+                                    <td>{{ phone.ram }}</td>
+                                    <td>Camera:</td>
+                                    <td>{{ phone.camera }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Processor Type:</td>
+                                    <td>{{ phone.processor_type }}</td>
+                                    <td>Processor:</td>
+                                    <td>{{ phone.processor_speed }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Screen Size:</td>
+                                    <td>{{ phone.screen_size }}</td>
+                                    <td>Screen Type:</td>
+                                    <td>{{ phone.screen_type }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Notes:</td>
+                                    <td colspan="3">{{ phone.notes }}</td>
+                                </tr>
+                            </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
 {% block js %}
     <script>
         function goBack() {

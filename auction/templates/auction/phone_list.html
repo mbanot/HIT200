@@ -11,8 +11,9 @@
             text-decoration: none;
         }
     </style>
+    <button onclick="goBack()" class="btn btn-primary">Go Back</button>
     {% if phone_list %}
-        <h3 style="padding-left: 25px">My Products</h3>
+        <h3 style="padding-left: 25px; margin-top: 10px">My Phones</h3>
         <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-xs-2" style="margin-left: 10px">
         {% for phone in phone_list %}
 {#            {% if phone.account == account %}#}
@@ -20,7 +21,7 @@
                 <div class="row no-gutters">
                     <div class="col-md-4 col-sm-3">
                         <div class="card-image">
-                            <img src="{{ phone.image.url }}"class="img-responsive" style="padding: 7px;" width="90%">
+                            <img src="{{ phone.image.url }}"class="img-responsive" style="padding: 7px;" width="90%" height="120px">
                         </div>
                     </div>
                     <div class="col-md-8 col-sm-7">
@@ -30,12 +31,9 @@
                                  <span>{{ phone.condition }} | </span>
                                 <span class="card-title">{{ phone.notes }}</span>
                              </p>
-                            <a class="btn btn-danger float-right" href="{% url 'auction:delete-phone' phone.id %}"
-                                style="margin-left: 20px"><span class="fa fa-trash-o"></span></a>
                             <a class="btn btn-primary float-right" href="{% url 'auction:phone-details' phone.id %}"
                                 style="margin-left: 20px">View more...</a>
-{#                            <a class="btn float-right" href="{% url 'account:account-update' product.id %}"#}
-{#                                style="background-color: #f0a00f">Edit</a>#}
+
                          </div>
                     </div>
                 </div>
@@ -47,4 +45,12 @@
         <h2>You have no products yet!!!</h2>
         <span>Click <a href="{% url 'auction:create-product' %}">here</a> to add a new product to sell. </span>
     {% endif %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 {% endblock %}

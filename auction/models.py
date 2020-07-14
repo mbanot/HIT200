@@ -12,7 +12,7 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
     category = models.CharField(max_length=30)
-    view = models.CharField(max_length=50)
+    view = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.category

@@ -34,21 +34,26 @@
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" id="amount" name="amount"
                                                                placeholder="Enter your bid amount" required><br>
-                                                        <input type="hidden" value='{{ auction.starting_bid }}'
+{#                                                        <input type="hidden" value='{{ auction.starting_bid }}'#}
+{#                                                               name="starting_bid" id="starting_bid">#}
+                                                        {% if bid %}
+                                                            <input type="hidden" value='{{ bid.amount }}'
                                                                name="starting_bid" id="starting_bid">
+                                                        {% else %}
+                                                            <input type="hidden" value='{{ auction.starting_bid }}'
+                                                               name="starting_bid" id="starting_bid">
+                                                        {% endif %}
                                                         <input type="hidden" value='{{ auction.id }}' name="auction_id"
                                                                id="auction_id">
                                                         <button class="btn btn-lg btn-block btn-success" type="submit">Bid</button>
                                                     </div>
                                                 </form>
+                                            {% else %}
+                                                 <a class="btn btn-primary btn-block btn-lg" href="{% url 'auction:update-phone' phone.id %}">
+                                                     Update Specs</a>
                                             {% endif %}
-                                        <a href="{% url 'auction:bidder-list' auction.id %}" style="margin-left: 25%">
-                                            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                                            View bidders list</a>
-                                        {% if  request.user.id == phone.id %}
-        {#                                    <li><a href="{% url 'delete_product' product_list.id %}" style="padding-left: 20px"><span#}
-        {#                                            class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a></li>#}
-                                        {% endif %}
+                                        <a href="{% url 'auction:bidder-list' auction.id %}" style="margin-left: 25%;
+                                            padding-top: 25px">View bidders list</a>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +63,48 @@
                         <div class="card">
                             <div class="card-body">
                                 <h1 style="size: 0.1em">{{ phone }}</h1>
-                                hey there
+                                <table class="table ">
+                                    <tr>
+                                        <td>Make:</td>
+                                        <td>{{ phone.brand }}</td>
+                                        <td>Model:</td>
+                                        <td>{{ phone.model }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Condition:</td>
+                                        <td>{{ phone.condition }}</td>
+                                        <td>Operating System:</td>
+                                        <td>{{ phone.operating_system }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Colour:</td>
+                                        <td>{{ phone.colour }}</td>
+                                        <td>Storage Capacity:</td>
+                                        <td>{{ phone.storage_capacity }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RAM:</td>
+                                        <td>{{ phone.ram }}</td>
+                                        <td>Camera:</td>
+                                        <td>{{ phone.camera }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Processor Type:</td>
+                                        <td>{{ phone.processor_type }}</td>
+                                        <td>Processor:</td>
+                                        <td>{{ phone.processor_speed }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Screen Size:</td>
+                                        <td>{{ phone.screen_size }}</td>
+                                        <td>Screen Type:</td>
+                                        <td>{{ phone.screen_type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Notes:</td>
+                                        <td colspan="3">{{ phone.notes }}</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>

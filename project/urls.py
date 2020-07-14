@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^account/', include('account.urls')),
     url(r'^auction/', include('auction.urls')),
     url(r'^', include('auction.urls')),
+    url('', include('pwa.urls')),
 ]
 
 if settings.DEBUG:

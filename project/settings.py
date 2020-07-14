@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'jquery',
     'rest_framework',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,34 @@ LOGIN_URL = "/account/login/"
 
 LOGOUT_REDIRECT_URL = "/account/login/"
 LOGOUT_URL = "/account/logout/"
+
+PWA_APP_NAME = 'Zim Tech Auctions'
+PWA_APP_DESCRIPTION = "A Zimbabwean online auction system for tech and gadgets."
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/images/favicon-194x194.png',
+        'sizes': '194x194'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/images/apple-touch-icon-152x152.png',
+        'sizes': '152x152'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/images/android-chrome-512x512.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-UK'
+PWA_APP_DEBUG_MODE = True

@@ -14,11 +14,10 @@ from .models import Phone, Category, Auction, Bid
 
 def index_view(request):
     template_name = 'index.html'
-
     phonesAuction = Auction.objects.filter(model_type='Phone', ending_date_and_time__gte=now(),
-                                     starting_date_and_time__lte=now())
-    bid = Bid.objects.all()
-    phones = Phone.objects.all()
+                                     starting_date_and_time__lte=now())[:4]
+    bid = Bid.objects.all()[0]
+    phones = Phone.objects.all().reverse()
     context = {
         'categories': Category.objects.all().order_by('category'),
         'phonesAuction': phonesAuction,
@@ -107,18 +106,33 @@ class AuctionStart(View):
         return render(request, self.template_name, {'form': form})
 
 
-class CurrentAuctionsListView(ListView):
-    model = Auction
+def current_auctions_view(request):
+    template_name = 'auction/current_auctions.html'
+    phonesAuction = Auction.objects.filter(model_type='Phone', ending_date_and_time__gte=now(),
+                                           starting_date_and_time__lte=now())
+    bid = Bid.objects.all()
+    phones = Phone.objects.all()
+    context = {
+        'categories': Category.objects.all().order_by('category'),
+        'phonesAuction': phonesAuction,
+        'phones': phones,
+        # 'bid': bid,
+    }
+    return render(request, template_name, context)
 
-    def get_queryset(self):
-        # Auction.objects.filter(content_type=content_type, date_end__gte=now(),
-        #                                            date_start__lte=now())
-        return Auction.objects.filter(ending_date_and_time__gte=now(), starting_date_and_time__lte=now())
 
-    def get_context_data(self, **kwargs):
-        context = super(CurrentAuctionsListView, self).get_context_data(**kwargs)
-        context['account'] = self.request.user
-        return context
+def closed_auctions_view(request):
+    template_name = 'auction/closed_auctions.html'
+    phonesAuction = Auction.objects.filter(model_type='Phone', ending_date_and_time__lte=now())
+    bid = Bid.objects.all()
+    phones = Phone.objects.all()
+    context = {
+        'categories': Category.objects.all().order_by('category'),
+        'phonesAuction': phonesAuction,
+        'phones': phones,
+        # 'bid': bid,
+    }
+    return render(request, template_name, context)
 
 
 class ClosedAuctionsListView(ListView):
@@ -159,21 +173,6 @@ class ClosedAuctionsListView(ListView):
 #     context['form'] = form
 #
 #     return render(request, template_name, context)
-
-#
-# def auction_floor_view(request):
-#     template_name = 'auction/auction_list.html'
-#     context = {
-#         'auction_list': Auction.objects.filter(ending_date_and_time__gte=now(), starting_date_and_time__lte=now()),
-#         'categories': Category.objects.all().order_by('category'),
-#         'bid_list': Bid.objects.all(),
-#         'phones': Auction.objects.filter(model_type='Phone')
-#     }
-#     return render(request, template_name, context)
-
-
-def filter_auctions(request):
-    return request
 
 
 def watchlist_page(request):
@@ -223,6 +222,7 @@ def save_bid(request):
     if request.method == 'POST':
         if int(request.POST.get('starting_bid')) > int(request.POST.get('amount')):
             context['error'] = "Bid amount should be more than the starting bid"
+
             return render(request, 'auction/auction_detail.html', context)
         else:
 
@@ -271,3 +271,18 @@ class PhoneDeleteView(DeleteView):
             return HttpResponseRedirect(url)
         else:
             return super(PhoneDeleteView, self).post(request, *args, **kwargs)
+
+
+def phones_auction_view(request):
+    template_name = 'auction/phones_view.html'
+    phonesAuction = Auction.objects.filter(model_type='Phone', ending_date_and_time__gte=now(),
+                                     starting_date_and_time__lte=now())
+    bid = Bid.objects.all()
+    phones = Phone.objects.all()
+    context = {
+        'categories': Category.objects.all().order_by('category'),
+        'phonesAuction': phonesAuction,
+        'phones': phones,
+        'bid': bid,
+    }
+    return render(request, template_name, context)
