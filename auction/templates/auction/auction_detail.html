@@ -2,6 +2,14 @@
 {% load rest_framework %}
 
 {% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <button onclick="goBack()" class="btn btn-primary">Go Back</button><br>
+                <center><h3 style="color: red" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3></center>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% for phone in phones %}
         {% if auction.product_id == phone.id %}
             <div class="container-fluid">

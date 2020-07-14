@@ -34,6 +34,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dashDropdown">
                         <a class="dropdown-item">Buyer</a>
+                        <a class="dropdown-item dropdown-header" href="{% url 'auction:ongoing-auctions' %}">&emsp;Ongoing Auctions</a>
+                        <a class="dropdown-item dropdown-header" href="{% url 'auction:closed-auctions' %}">&emsp;Ended Auctions</a>
                         <a class="dropdown-item">Seller</a>
                         <a class="dropdown-item dropdown-header" href="{% url 'auction:my-products' %}">&emsp;My Products</a>
                         <a class="dropdown-item dropdown-header" href="{% url 'auction:create-product' %}">&emsp;Add Product</a>
@@ -42,7 +44,7 @@
                     </div>
 
                 </a>
-                <a class="p-2 text-dark" href="#">Help</a>
+                <a class="p-2 text-dark" href="#">FAQs</a>
             </nav>
             {% if user.is_authenticated %}
                 <div class="dropdown">

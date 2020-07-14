@@ -75,11 +75,11 @@
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ phone }}</h5>
-                                                {% if bid.auction_id == phoneAuction.id %}
-                                                    <span class="card-text">{{ bid.amount }}</span>
-                                                {% else %}
-                                                    <span class="card-text">${{ phoneAuction.starting_bid }}</span>
-                                                {% endif %}
+{#                                                {% if bid.auction_id == phoneAuction.id %}#}
+{#                                                    <span class="card-text">{{ bid.amount }}</span>#}
+{#                                                {% else %}#}
+{#                                                    <span class="card-text">${{ phoneAuction.starting_bid }}</span>#}
+{#                                                {% endif %}#}
                                             <br>
                                                 <span class="card-text end-time fa fa-clock-o">&nbsp;Ending at {{ phoneAuction.ending_date_and_time }}</span>
                                                 <input name="auction" value="{{ phoneAuction.id }}" type="hidden">

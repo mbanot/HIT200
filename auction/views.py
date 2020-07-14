@@ -4,8 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.urls import reverse
 from django.utils.timezone import now
 from django.views.generic import CreateView, DetailView, DeleteView, ListView, UpdateView
-import datetime
-
+from django.contrib import messages
 from django.views.generic.base import View
 
 from .forms import PhoneCreationForm, AuctionStartForm
@@ -135,16 +134,30 @@ def closed_auctions_view(request):
     return render(request, template_name, context)
 
 
-class ClosedAuctionsListView(ListView):
-    model = Auction
+def ongoing_auctions_view(request):
+    template_name = 'auction/ongoing_auctions.html'
+    phonesAuction = Auction.objects.filter(model_type='Phone', starting_date_and_time__gte=now(),
+                                           ending_date_and_time__lte=now())
+    bid = Bid.objects.filter(account_id=request.user.id)
+    phones = Phone.objects.all()
+    context = {
+        'categories': Category.objects.all().order_by('category'),
+        'phonesAuction': phonesAuction,
+        'phones': phones,
+        'bids': bid,
+    }
+    return render(request, template_name, context)
 
-    def get_queryset(self):
-        return Auction.objects.filter(product__account=self.request.user, ending_date_and_time__lte=now())
-
-    def get_context_data(self, **kwargs):
-        context = super(ClosedAuctionsListView, self).get_context_data(**kwargs)
-        context['account'] = self.request.user
-        return context
+# class ClosedAuctionsListView(ListView):
+#     model = Auction
+#
+#     def get_queryset(self):
+#         return Auction.objects.filter(product__account=self.request.user, ending_date_and_time__lte=now())
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(ClosedAuctionsListView, self).get_context_data(**kwargs)
+#         context['account'] = self.request.user
+#         return context
 
 
 # @login_required(redirect_field_name='/auction/dashboard/', login_url='/account/login/')
@@ -173,10 +186,6 @@ class ClosedAuctionsListView(ListView):
 #     context['form'] = form
 #
 #     return render(request, template_name, context)
-
-
-def watchlist_page(request):
-    return request
 
 
 def detail_view(request, pk):
@@ -221,8 +230,7 @@ def save_bid(request):
     context['auction'] = Auction.objects.get(id=request.POST.get('auction_id'))
     if request.method == 'POST':
         if int(request.POST.get('starting_bid')) > int(request.POST.get('amount')):
-            context['error'] = "Bid amount should be more than the starting bid"
-
+            messages.error(request, "Bid amount should be more than the current bid!!!")
             return render(request, 'auction/auction_detail.html', context)
         else:
 
@@ -248,7 +256,7 @@ def save_bid(request):
                     obj = Bid(account=request.user, auction=Auction.objects.get(id=request.POST.get('auction_id')),
                               amount=int(request.POST.get('amount')))
                     obj.save()
-                    context['alert'] = "The bid has been successfully made."
+                    messages.success(request, "The bid has been successful")
                     # auction = Auction.objects.get(id=request.POST.get('auction_id'))
                     return HttpResponseRedirect(reverse('auction:index'))
     return render(request, 'auction/auction_detail.html', context)

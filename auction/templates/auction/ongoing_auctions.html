@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if phonesAuction %}
+        <div class="card col-sm-12" style="margin-bottom: 10px; color: cornflowerblue">
+            <div class="card-body">
+                <h1>Phones</h1>
+            </div>
+        </div>
+        {% for phoneAuction in phonesAuction %}
+            {% for phone in phones %}
+                {% for bid in bids %}
+                    {% if phone.id == bid.auction.product_id %}
+                        <div class="card mb-1" style="padding-bottom: 10px; margin-bottom: 10px; max-width: 600px">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 col-sm-3">
+                                    <div class="card-image">
+                                        <img src="{{ phone.image.url }}"class="img-responsive" style="padding: 7px;" width="90%">
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-sm-7">
+                                     <div class="card-body">
+                                         <h5 class="card-title">{{ phone }}</h5>
+                                         <p class="card-text">
+                                             <span>{{ phone.condition }} | </span>
+                                            <span class="card-title">{{ phone.notes }}</span>
+                                         </p>
+                                         {% if bid %}
+                                             <span class="float-left">${{ bid.amount }}</span>
+                                         {% else %}
+                                            <span class="float-left">${{ phoneAuction.starting_bid }}</span>
+                                         {% endif %}
+                                         <a href="{% url 'auction:bidder-list' phoneAuction.id %}" style="margin-left: 25%"
+                                            class="float-left">View bidders list</a>
+                    {#                    <a class="btn btn-danger float-right" href="{% url 'auction:delete-product' product.id %}"#}
+                    {#                       style="margin-left: 20px"><span class="glyphicon glyphicon-trash">Delete</span></a>#}
+                                        <a class="btn btn-primary float-right" href="{% url 'auction:details' phone.id %}">View more...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <h3>There are currently no ongoing auctions!!</h3>
+    {% endif %}
+{% endblock %}

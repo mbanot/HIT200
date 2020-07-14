@@ -1,6 +1,3 @@
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
-
 from django.db import models
 from django.urls import reverse
 from account.models import Account
@@ -76,13 +73,6 @@ class Auction(models.Model):
 
     def __str__(self):
         return str(self.product_id)
-
-
-class Watchlist(models.Model):
-
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
 
 
 class Bid(models.Model):
